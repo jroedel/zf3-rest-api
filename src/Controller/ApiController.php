@@ -11,7 +11,7 @@ class ApiController extends AbstractRestfulController
 {
 
     /**
-     * @var Integer $httpStatusCode Define Api Response code.
+     * @var int $httpStatusCode Define Api Response code.
      */
     public $httpStatusCode = 200;
 
@@ -22,13 +22,13 @@ class ApiController extends AbstractRestfulController
 
     /**
      *
-     * @var type string 
+     * @var string $token
      */
     public $token;
 
     /**
      *
-     * @var type Object or Array
+     * @var object|array $tokenPayload
      */
     public $tokenPayload;
 
@@ -44,7 +44,7 @@ class ApiController extends AbstractRestfulController
 
     /**
      * This Function call from eventmanager to check authntication and token validation
-     * @param type $event
+     * @param \Zend\Mvc\MvcEvent $event
      * 
      */
     public function checkAuthorization($event)
@@ -85,8 +85,8 @@ class ApiController extends AbstractRestfulController
 
     /**
      * Check Request object have Authorization token or not 
-     * @param type $request
-     * @return type String
+     * @param \Zend\Stdlib\RequestInterface $request
+     * @return string
      */
     public function findJwtToken($request)
     {
@@ -142,8 +142,7 @@ class ApiController extends AbstractRestfulController
 
     /**
      * Create Response for api Assign require data for response and check is valid response or give error
-     * @return \Zend\View\Model\JsonModel 
-     * 
+     * @return \Zend\View\Model\JsonModel
      */
     public function createResponse()
     {
@@ -158,7 +157,9 @@ class ApiController extends AbstractRestfulController
             $response->setStatusCode($this->httpStatusCode);
             $errorKey = $config['ApiRequest']['responseFormat']['errorKey'];
             $defaultErrorText = $config['ApiRequest']['responseFormat']['defaultErrorText'];
-            $this->apiResponse[$errorKey] = $defaultErrorText;
+            $this->apiResponse = [
+                $errorKey => $defaultErrorText
+            ];
         }
         $statusKey = $config['ApiRequest']['responseFormat']['statusKey'];
         if ($this->httpStatusCode == 200) {
